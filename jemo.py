@@ -1,5 +1,5 @@
-from dotenv import load_dotenv
-import os
+# from dotenv import load_dotenv
+# import os
 import pickle
 from langchain.vectorstores import Chroma
 from langchain.text_splitter import CharacterTextSplitter
