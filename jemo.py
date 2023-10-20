@@ -1,6 +1,7 @@
 # from dotenv import load_dotenv
 # import os
 import pickle
+import openai
 from langchain.vectorstores import Chroma
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.llms import OpenAI
@@ -18,7 +19,7 @@ from langchain.memory import ConversationBufferMemory
 # OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 import streamlit as st
-OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+openai.api_key=st.secrets["OPENAI_API_KEY"]
 MODEL = "gpt-3.5-turbo"
 
 llm = OpenAI(temperature=0)
@@ -117,7 +118,7 @@ def generate_questions(input_dict):
     # The questions should demonstrate understanding of key concepts from the book content. Format the full question paper clearly labeling the sections and numbering the questions sequentially.
     # '''
 
-    llm = ChatOpenAI(model_name=MODEL, temperature=0.4, openai_api_key=OPENAI_API_KEY)
+    llm = ChatOpenAI(model_name=MODEL, temperature=0.4)
     chain = RetrievalQA.from_llm(
             llm=llm,
             retriever=book_content_vectorstore.as_retriever(),
