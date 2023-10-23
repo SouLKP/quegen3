@@ -1,5 +1,6 @@
-# from dotenv import load_dotenv
-# import os
+import os
+from dotenv import load_dotenv
+load_dotenv()
 import pickle
 import openai
 from langchain.vectorstores import Chroma
