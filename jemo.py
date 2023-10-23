@@ -15,6 +15,7 @@ from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.embeddings import HuggingFaceEmbeddings
+from langchain.chains import ConversationalRetrievalChain, RetrievalQA
 from langchain.llms import HuggingFaceHub
 
 
