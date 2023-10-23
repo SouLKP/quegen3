@@ -1,4 +1,4 @@
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 import openai
 import pickle
@@ -13,26 +13,21 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
-
-print("Insidwe jemo")
 import streamlit as st
-load_dotenv()
-# MODEL = os.getenv("MODEL")
-# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-# OPENAI_API_KEY_en=os.getenv("OPENAI_API_KEY")
-# openai.api_key =os.getenv("OPENAI_API_KEY")
+# load_dotenv()
+
+MODEL="gpt-3.5-turbo"
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-print(openai.api_key,'**********************************')
+
 llm = OpenAI(temperature=0)
 
-# Define ConversationBufferMemory
 memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
 
-# pdf_file_path = "/home/webclues/Desktop/deep_learning.pdf"
-# pages1 = []
-# loader = PyPDFLoader(pdf_file_path)
-# pages1 += loader.load_and_split()
-# print("Total Pages of Book", len(pages1))
+pdf_file_path = "/home/webclues/Desktop/deep_learning.pdf"
+pages1 = []
+loader = PyPDFLoader(pdf_file_path)
+pages1 += loader.load_and_split()
+print("Total Pages of Book", len(pages1))
 
 # loader = TextLoader("laste.txt") 
 # documents = loader.load()
@@ -66,7 +61,7 @@ memory = ConversationBufferMemory(memory_key='chat_history', return_messages=Tru
 
 
 
-MODEL="gpt-3.5-turbo"
+
 
 def generate_questions(input_dict):
     print(input_dict,'\n **********************') 
@@ -143,7 +138,7 @@ def generate_questions(input_dict):
     # The questions should demonstrate understanding of key concepts from the book content. Format the full question paper clearly labeling the sections and numbering the questions sequentially.
     # '''
 
-    llm = ChatOpenAI(model_name=MODEL, temperature=0.4, openai_api_key="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")
+    llm = ChatOpenAI(model_name=MODEL, temperature=0.4, openai_api_key=)
     chain = RetrievalQA.from_llm(
             llm=llm,
             retriever=book_content_vectorstore.as_retriever(),
