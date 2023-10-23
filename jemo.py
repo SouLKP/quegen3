@@ -28,19 +28,19 @@ llm = OpenAI(temperature=0)
 # Define ConversationBufferMemory
 memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
 
-pdf_file_path = "/home/webclues/Desktop/deep_learning.pdf"
-pages1 = []
-loader = PyPDFLoader(pdf_file_path)
-pages1 += loader.load_and_split()
-print("Total Pages of Book", len(pages1))
+# pdf_file_path = "/home/webclues/Desktop/deep_learning.pdf"
+# pages1 = []
+# loader = PyPDFLoader(pdf_file_path)
+# pages1 += loader.load_and_split()
+# print("Total Pages of Book", len(pages1))
 
 # loader = TextLoader("laste.txt") 
 # documents = loader.load()
 # text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 # texts = text_splitter.split_documents(documents)
-book_content_vectorstore=""
-embeddings = OpenAIEmbeddings()
-book_content_vectorstore = FAISS.from_documents(pages1, embeddings)
+# book_content_vectorstore=""
+# embeddings = OpenAIEmbeddings()
+# book_content_vectorstore = FAISS.from_documents(pages1, embeddings)
  
 
 
@@ -71,14 +71,14 @@ book_content_vectorstore = FAISS.from_documents(pages1, embeddings)
 
 def generate_questions(input_dict):
     print(input_dict,'\n **********************') 
-    file_path = 'pkl/deepbook.pkl'
-    if not os.path.exists(file_path):
-        with open('pkl/deepbook.pkl', 'wb') as f:
-            pickle.dump(book_content_vectorstore, f)
-            print("pkl done")
+    # file_path = 'pkl/deepbook.pkl'
+    # if not os.path.exists(file_path):
+    #     with open('pkl/deepbook.pkl', 'wb') as f:
+    #         pickle.dump(book_content_vectorstore, f)
+    #         print("pkl done")
 
-    # with open(file_path, 'rb') as file:
-    #     book_content_vectorstore = pickle.load(file)
+    with open(file_path, 'rb') as file:
+        book_content_vectorstore = pickle.load(file)
     # questions_pattern_vectorestore = FAISS.from_documents(texts, embeddings)
 
     prompt_template = "Generate questions from the book content with the following section-wise instructions:"
