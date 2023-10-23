@@ -17,10 +17,11 @@ from langchain.memory import ConversationBufferMemory
 print("Insidwe jemo")
 
 load_dotenv()
-MODEL = os.getenv("MODEL")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_API_KEY_en=os.getenv("OPENAI_API_KEY")
-openai.api_key =os.getenv("OPENAI_API_KEY")
+# MODEL = os.getenv("MODEL")
+# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+# OPENAI_API_KEY_en=os.getenv("OPENAI_API_KEY")
+# openai.api_key =os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 print(openai.api_key,'**********************************')
 llm = OpenAI(temperature=0)
 
@@ -43,12 +44,12 @@ book_content_vectorstore = FAISS.from_documents(pages1, embeddings)
  
 
 
-import pickle
-file_path = 'pkl/deepbook.pkl'
-if not os.path.exists(file_path):
-    with open('pkl/deepbook.pkl', 'wb') as f:
-        pickle.dump(book_content_vectorstore, f)
-        print("pkl done")
+# import pickle
+# file_path = 'pkl/deepbook.pkl'
+# if not os.path.exists(file_path):
+#     with open('pkl/deepbook.pkl', 'wb') as f:
+#         pickle.dump(book_content_vectorstore, f)
+#         print("pkl done")
 
     # with open(file_path, 'rb') as file:
     #     book_content_vectorstore = pickle.load(file)
