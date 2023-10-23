@@ -15,7 +15,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 
 print("Insidwe jemo")
-
+import streamlit as st
 load_dotenv()
 # MODEL = os.getenv("MODEL")
 # OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
