@@ -24,7 +24,8 @@ from langchain.llms import HuggingFaceHub
 # OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 import streamlit as st
-openai.api_key=st.secrets["OPENAI_API_KEY"]
+# openai.api_key=st.secrets["OPENAI_API_KEY"]
+huggingfacehub_api_token = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 MODEL = "gpt-3.5-turbo"
 
 llm = OpenAI(temperature=0)
