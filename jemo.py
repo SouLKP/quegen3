@@ -66,8 +66,7 @@ memory = ConversationBufferMemory(memory_key='chat_history', return_messages=Tru
 
 
 
-
-
+MODEL="gpt-3.5-turbo"
 
 def generate_questions(input_dict):
     print(input_dict,'\n **********************') 
