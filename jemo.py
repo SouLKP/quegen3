@@ -71,7 +71,7 @@ memory = ConversationBufferMemory(memory_key='chat_history', return_messages=Tru
 
 def generate_questions(input_dict):
     print(input_dict,'\n **********************') 
-    # file_path = 'pkl/deepbook.pkl'
+    file_path = 'pkl/deepbook.pkl'
     # if not os.path.exists(file_path):
     #     with open('pkl/deepbook.pkl', 'wb') as f:
     #         pickle.dump(book_content_vectorstore, f)
