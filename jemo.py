@@ -126,22 +126,14 @@ def generate_questions(input_dict):
     repo_id = "meta-llama/Llama-2-70b-chat-hf"
     llm = HuggingFaceHub(repo_id=repo_id,verbose=False, model_kwargs={
                          "temperature": 0.2, "max_seq_len": 4000, "max_new_tokens": 2048})
-    memory = ConversationBufferMemory(
-        memory_key='chat_history', return_messages=True)
-    chain = ConversationalRetrievalChain.from_llm(
-        llm=llm,
-        retriever=book_content_vectorstore.as_retriever(),
-        memory=memory,
-        # return_source_documents=True,
-        combine_docs_chain_kwargs={"prompt": prompt_template}
-    )
     
-    # llm = ChatOpenAI(model_name=MODEL, temperature=0.4)
-    # chain = RetrievalQA.from_llm(
-    #         llm=llm,
-    #         retriever=book_content_vectorstore.as_retriever(),
-    #         memory=memory, 
-    #     )
+    
+    llm = ChatOpenAI(model_name=MODEL, temperature=0.4)
+    chain = RetrievalQA.from_llm(
+            llm=llm,
+            retriever=book_content_vectorstore.as_retriever(),
+            memory=memory, 
+        )
 
     question_format_instructions = chain(prompt_template)
     print("instruction :  ",question_format_instructions['result'])
