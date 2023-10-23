@@ -128,7 +128,7 @@ def generate_questions(input_dict):
                          "temperature": 0.2, "max_seq_len": 4000, "max_new_tokens": 2048})
     
     
-    llm = ChatOpenAI(model_name=MODEL, temperature=0.4)
+    # llm = ChatOpenAI(model_name=MODEL, temperature=0.4)
     chain = RetrievalQA.from_llm(
             llm=llm,
             retriever=book_content_vectorstore.as_retriever(),
