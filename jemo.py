@@ -13,6 +13,8 @@ from langchain.document_loaders import PyPDFLoader
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
+from langchain.embeddings import HuggingFaceEmbeddings
+
 
 # load_dotenv()
 # MODEL = os.getenv("MODEL")
