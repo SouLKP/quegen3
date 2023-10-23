@@ -135,7 +135,7 @@ def generate_questions(input_dict):
             memory=memory, 
         )
 
-    question_format_instructions = chain(prompt_template)
+    question_format_instructions = chain(prompt_template,llm=llm)
     print("instruction :  ",question_format_instructions['result'])
     quepep = question_format_instructions['result']
     # quepep = "Done"
