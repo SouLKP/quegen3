@@ -28,7 +28,6 @@ import streamlit as st
 huggingfacehub_api_token = st.secrets["HUGGINGFACEHUB_API_TOKEN"]
 MODEL = "gpt-3.5-turbo"
 
-llm = OpenAI(temperature=0)
 
 # Define ConversationBufferMemory
 memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
