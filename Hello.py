@@ -73,23 +73,21 @@ with st.sidebar:
     l1 = []
     st.title("Sectional Details")
     uploaded_file = st.file_uploader("Upload Your book", type="pdf",accept_multiple_files=True)
-    if 'pdf' not in st.session_state:
-        st.session_state['pdf'] = '123'
-        pages = []
-        for i in uploaded_file:
-            # mi = uploaded_file[0].file_id
-            with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-                tmp_file.write(i.getvalue())
-                tmp_file_path = tmp_file.name
-                loader = PyPDFLoader(tmp_file_path)
-                pages += loader.load_and_split()
-                print("  Total Pages :",len(pages),"")
-        if pages:
-            with st.spinner(text="In progress..."):
-                embeddings = OpenAIEmbeddings()
-                book_content_vectorstore = FAISS.from_documents(pages, embeddings)
-                with open('one.pkl','wb') as f:
-                    pickle.dump(book_content_vectorstore, f)
+    pages = []
+    for i in uploaded_file:
+        # mi = uploaded_file[0].file_id
+        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+            tmp_file.write(i.getvalue())
+            tmp_file_path = tmp_file.name
+            loader = PyPDFLoader(tmp_file_path)
+            pages += loader.load_and_split()
+            print("  Total Pages :",len(pages),"")
+    if pages:
+        with st.spinner(text="In progress..."):
+            embeddings = OpenAIEmbeddings()
+            book_content_vectorstore = FAISS.from_documents(pages, embeddings)
+            with open('one.pkl','wb') as f:
+                pickle.dump(book_content_vectorstore, f)
     
 
     with st.form("Sectional Details",clear_on_submit=True):
