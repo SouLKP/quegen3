@@ -30,7 +30,7 @@ memory = ConversationBufferMemory(memory_key='chat_history', return_messages=Tru
 
 def generate_questions(input_dict):
     print(input_dict,'\n **********************') 
-    file_path = 'pkl/one.pkl'
+    file_path = 'one.pkl'
     with open(file_path, 'rb') as file:
         book_content_vectorstore = pickle.load(file)
 
@@ -73,11 +73,11 @@ with st.sidebar:
     l1 = []
     st.title("Sectional Details")
     uploaded_file = st.file_uploader("Upload Your book", type="pdf",accept_multiple_files=True)
-    if 'vectordb' not in st.session_state:
-        st.session_state.vectordb = {'key1': 'op_in_the_chat'}
+    if 'pdf' not in st.session_state:
+        st.session_state['pdf'] = '123'
         pages = []
         for i in uploaded_file:
-            mi = uploaded_file[0].file_id
+            # mi = uploaded_file[0].file_id
             with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
                 tmp_file.write(i.getvalue())
                 tmp_file_path = tmp_file.name
@@ -88,8 +88,9 @@ with st.sidebar:
             with st.spinner(text="In progress..."):
                 embeddings = OpenAIEmbeddings()
                 book_content_vectorstore = FAISS.from_documents(pages, embeddings)
-                with open('pkl/one.pkl','wb') as f:
+                with open('one.pkl','wb') as f:
                     pickle.dump(book_content_vectorstore, f)
+    
 
     with st.form("Sectional Details",clear_on_submit=True):
         Section = st.radio("Select Section Name", ["A", "B", "C"],horizontal = True,index=0,key='section')
