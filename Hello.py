@@ -30,7 +30,7 @@ memory = ConversationBufferMemory(memory_key='chat_history', return_messages=Tru
 
 def generate_questions(input_dict):
     print(input_dict,'\n **********************') 
-    file_path = 'pkl/deep.pkl'
+    file_path = 'pkl/one.pkl'
     with open(file_path, 'rb') as file:
         book_content_vectorstore = pickle.load(file)
 
