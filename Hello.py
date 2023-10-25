@@ -20,7 +20,7 @@ load_dotenv()
 
 MODEL="gpt-3.5-turbo"
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
-# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 llm = OpenAI(temperature=0)
 memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
@@ -30,7 +30,7 @@ memory = ConversationBufferMemory(memory_key='chat_history', return_messages=Tru
 
 def generate_questions(input_dict):
     print(input_dict,'\n **********************') 
-    file_path = 'pkl/deepbook.pkl'
+    file_path = 'pkl/deep.pkl'
     with open(file_path, 'rb') as file:
         book_content_vectorstore = pickle.load(file)
 
@@ -73,28 +73,25 @@ with st.sidebar:
     l1 = []
     st.title("Sectional Details")
     uploaded_file = st.file_uploader("Upload Your book", type="pdf",accept_multiple_files=True)
-    pages = []
-    for i in uploaded_file:
-        mi = uploaded_file[0].file_id
-        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
-            tmp_file.write(i.getvalue())
-            tmp_file_path = tmp_file.name
-            loader = PyPDFLoader(tmp_file_path)
-            pages += loader.load_and_split()
-            print("  Total Pages :",len(pages),"")
-    if pages:
-        with st.spinner(text="In progress..."):
-            embeddings = OpenAIEmbeddings()
-            book_content_vectorstore = FAISS.from_documents(pages, embeddings)
-            file  = f'pkl/{mi}.pkl'
-            if not os.path.exists(file):
-                files  = os.listdir('pkl')
-                for i in files:
-                    os.remove(f'pkl/{i}')
-                with open(file, 'wb') as f:
+    if 'vectordb' not in st.session_state:
+        st.session_state.vectordb = {'key1': 'op_in_the_chat'}
+        pages = []
+        for i in uploaded_file:
+            mi = uploaded_file[0].file_id
+            with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+                tmp_file.write(i.getvalue())
+                tmp_file_path = tmp_file.name
+                loader = PyPDFLoader(tmp_file_path)
+                pages += loader.load_and_split()
+                print("  Total Pages :",len(pages),"")
+        if pages:
+            with st.spinner(text="In progress..."):
+                embeddings = OpenAIEmbeddings()
+                book_content_vectorstore = FAISS.from_documents(pages, embeddings)
+                with open('pkl/one.pkl','wb') as f:
                     pickle.dump(book_content_vectorstore, f)
 
-    with st.form("Sectional Details",clear_on_submit=True,key='kp'):
+    with st.form("Sectional Details",clear_on_submit=True):
         Section = st.radio("Select Section Name", ["A", "B", "C"],horizontal = True,index=0,key='section')
         show_A = False
         show_B = False 
