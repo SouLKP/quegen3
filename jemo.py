@@ -94,7 +94,7 @@ with st.sidebar:
                 with open(file, 'wb') as f:
                     pickle.dump(book_content_vectorstore, f)
 
-    with st.form("Sectional Details",clear_on_submit=True):
+    with st.form("Sectional Details",clear_on_submit=True,key='kp'):
         Section = st.radio("Select Section Name", ["A", "B", "C"],horizontal = True,index=0,key='section')
         show_A = False
         show_B = False 
