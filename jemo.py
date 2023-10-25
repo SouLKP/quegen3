@@ -1,8 +1,10 @@
-# from dotenv import load_dotenv
+import streamlit as st  
+import tempfile
+import pickle
+from dotenv import load_dotenv
 import os
 import openai
 import pickle
-from langchain.vectorstores import Chroma
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.llms import OpenAI
 from langchain.chains import VectorDBQA
@@ -14,66 +16,23 @@ from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 import streamlit as st
-# load_dotenv()
+load_dotenv()
 
 MODEL="gpt-3.5-turbo"
 OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
+# OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 llm = OpenAI(temperature=0)
-
 memory = ConversationBufferMemory(memory_key='chat_history', return_messages=True)
 
-pdf_file_path = "/home/webclues/Desktop/deep_learning.pdf"
-pages1 = []
-loader = PyPDFLoader(pdf_file_path)
-pages1 += loader.load_and_split()
-print("Total Pages of Book", len(pages1))
-
-# loader = TextLoader("laste.txt") 
-# documents = loader.load()
-# text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-# texts = text_splitter.split_documents(documents)
-# book_content_vectorstore=""
-# embeddings = OpenAIEmbeddings()
-# book_content_vectorstore = FAISS.from_documents(pages1, embeddings)
- 
-
-
-# import pickle
-# file_path = 'pkl/deepbook.pkl'
-# if not os.path.exists(file_path):
-#     with open('pkl/deepbook.pkl', 'wb') as f:
-#         pickle.dump(book_content_vectorstore, f)
-#         print("pkl done")
-
-    # with open(file_path, 'rb') as file:
-    #     book_content_vectorstore = pickle.load(file)
-    # questions_pattern_vectorestore = FAISS.from_documents(texts, embeddings)
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 def generate_questions(input_dict):
     print(input_dict,'\n **********************') 
     file_path = 'pkl/deepbook.pkl'
-    # if not os.path.exists(file_path):
-    #     with open('pkl/deepbook.pkl', 'wb') as f:
-    #         pickle.dump(book_content_vectorstore, f)
-    #         print("pkl done")
-
     with open(file_path, 'rb') as file:
         book_content_vectorstore = pickle.load(file)
-    # questions_pattern_vectorestore = FAISS.from_documents(texts, embeddings)
 
     prompt_template = "Generate questions from the book content with the following section-wise instructions:"
     output_template = ""
@@ -94,51 +53,7 @@ def generate_questions(input_dict):
     last_message = "\n The questions should demonstrate understanding of key concepts from the book content. Format the full question paper clearly labeling the sections and numbering the questions sequentially."    
     
     prompt_template = prompt_template + output_template + last_message
-    # print(prompt_template,"************************")
-    # prompt_template = '''
-    # Generate a questions from the book content with the following section-wise instructions:
-
-    # Section A:
-
-    # Question type: MCQ
-    # Topic: Computer Vision, Machine Learning algorithms
-    # Difficulty level: Medium
-    # Section B:
-
-    # Question type: Fill in the blank
-    # Topic: Deep Learning, CNNs
-    # Difficulty level: Medium
-    # Section C:
-
-    # Question type: Practical question
-    # Topic: Transformers
-    # Difficulty level: Medium
-    # Section D:
-
-    # Question type: Theoretical question
-    # Topic: Generative AI
-    # Difficulty level: Medium 
-    # Section E:
-
-    # Question type: Graph 
-    # Topic: generate graph
-    # Difficulty level: Medium
-    # Output the questions in the following format:
-
-    # Section A: instruction : Question type
-    # Question: [Generated MCQ question]
-    # Answer: [Answer option letter]
-
-    # Section B: instruction : Fill in the blank
-    # Question: [Generated blank question]
-    # Answer: [Fill in the blank answer]
-
-    # And so on for Sections C and D...
-
-    # The questions should demonstrate understanding of key concepts from the book content. Format the full question paper clearly labeling the sections and numbering the questions sequentially.
-    # '''
-
-    llm = ChatOpenAI(model_name=MODEL, temperature=0.4, openai_api_key=)
+    llm = ChatOpenAI(model_name=MODEL, temperature=0.4, openai_api_key='')
     chain = RetrievalQA.from_llm(
             llm=llm,
             retriever=book_content_vectorstore.as_retriever(),
@@ -146,36 +61,101 @@ def generate_questions(input_dict):
         )
 
     question_format_instructions = chain(prompt_template)
-    print("instruction :  ",question_format_instructions['result'])
+    # print("instruction :  ",question_format_instructions['result'])
     quepep = question_format_instructions['result']
-    # quepep = "Done"
-
-    # from langchain.agents import load_tools
-    # tools = load_tools(['dalle-image-generator'])
-
-    # # Initialize agent
-    # from langchain.agents import initialize_agent
-    # agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)
-    
-    # prompt = """
-    # Generate an exam question about "A diagram explaining pythagoras theorem with some angle values labeled":
-
-    # [DALL-E generated image of "A diagram explaining pythagoras theorem with some angle values labeled"]
-
-    # The question text should ask the student to analyze the image and apply concepts to explain the pythagoras. Leave space for the student to write their explanatory answer after the question.
-
-    # """
-
-    # output = agent.run(prompt)
- 
-    # print(output)
-    print(quepep)
     return quepep
 
-# if __name__ == "__main__":
-#     result = generate_questions()
-#     print(result)
+if 'my_dict' not in st.session_state:
+    st.session_state.my_dict = {}
 
-# prompt_template = "give me paper"
-# op = generate_questions(prompt_template)
-# print(op)
+
+with st.sidebar:
+    l1 = []
+    st.title("Sectional Details")
+    uploaded_file = st.file_uploader("Upload Your book", type="pdf",accept_multiple_files=True)
+    pages = []
+    for i in uploaded_file:
+        mi = uploaded_file[0].file_id
+        with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+            tmp_file.write(i.getvalue())
+            tmp_file_path = tmp_file.name
+            loader = PyPDFLoader(tmp_file_path)
+            pages += loader.load_and_split()
+            print("  Total Pages :",len(pages),"")
+    if pages:
+        with st.spinner(text="In progress..."):
+            embeddings = OpenAIEmbeddings()
+            book_content_vectorstore = FAISS.from_documents(pages, embeddings)
+            file  = f'pkl/{mi}.pkl'
+            if not os.path.exists(file):
+                files  = os.listdir('pkl')
+                for i in files:
+                    os.remove(f'pkl/{i}')
+                with open(file, 'wb') as f:
+                    pickle.dump(book_content_vectorstore, f)
+
+    with st.form("Sectional Details",clear_on_submit=True):
+        Section = st.radio("Select Section Name", ["A", "B", "C"],horizontal = True,index=0,key='section')
+        show_A = False
+        show_B = False 
+        show_C = False
+        if Section == "A":
+            show_A = True
+        elif Section == "B": 
+            show_B = True
+        else:
+            show_C = True
+        # print(Section)
+        question_type = st.selectbox("Select Question Type", ["MCQS","True / False","Coding Question","Theoritical","Short Question"],placeholder="Ex : mcqs,coding question",index=1)
+        question_level = st.selectbox("Select Question Level", ["Easy", "Medium", "Hard"],index=1)
+        num_questions = st.number_input("How many questions?", min_value=1,max_value=12, step=1) 
+        # Topics = st.text_input("topics",placeholder="ex : machine learning,deep learning")
+        countries = ["machine learning", "python", "Computer Vision", "CNN", "AI", "deep learning"]
+        Topics = st.multiselect("Choose Topic", countries, ["python"])
+        submitted = st.form_submit_button("Submit")
+        if submitted:
+        #     quedi["option"] = option
+        #     quedi["question_type"] = question_type
+        #     quedi["question_level"] = question_level
+        #     quedi["num_questions"] = num_questions
+        #     quedi["num_questions"] = num_questions
+            l1.append(Section)
+            l1.append(question_type)
+            l1.append(question_level)
+            l1.append(num_questions)
+            l1.append(Topics)
+            st.session_state.my_dict[Section] = l1
+        reset = st.form_submit_button("reset")
+
+
+if st.session_state.my_dict:
+    with st.expander("See Selected Section details"):
+        columns = st.columns(len(st.session_state.my_dict))
+
+        # A list to collect keys to be removed
+        keys_to_remove = []
+        
+        
+        # Display data and add "Remove" button for each column 
+        for col, (key, value) in zip(columns, st.session_state.my_dict.items()):
+            col.subheader(f"Section {key}")
+            col.write(value)
+            # Use a "Remove" button to add the key to keys_to_remove list
+            if col.button(f"Double-Click to Remove {key}"):
+                keys_to_remove.append(key)
+
+        # Remove the selected keys
+        for key in keys_to_remove:
+            del st.session_state.my_dict[key]
+
+if st.session_state.my_dict:
+    op = st.button("Generate question paper",type='primary',key='dif2')
+    if op: 
+        input_dict = st.session_state.my_dict
+        question_paper_result = generate_questions(input_dict)
+        st.write("Generate Question Paper")
+        st.write(question_paper_result)
+        if st.download_button("Download as Text File",data=question_paper_result,type='primary',key='non'): 
+            st.success("Text file downloaded!")  
+            
+    
