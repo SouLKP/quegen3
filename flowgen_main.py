@@ -69,7 +69,7 @@ if st.text_input("Enter dfd title"):
         file.write(code)
     
     try:
-        output = subprocess.check_output(["python", 'code.py'], text=True)
+        output = subprocess.check_output(["python", 'code.py'],stderr=subprocess.STDOUT, text=True)
         print(output,'----------------------------------------------------')
         st.code(output, language="python")
     except subprocess.CalledProcessError as e:
