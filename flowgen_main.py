@@ -8,7 +8,8 @@ from langchain.llms import OpenAI
 from langchain.chains import LLMChain
 import subprocess
  
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+#OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = st.secrets["OPENAI_API_KEY"]
 
 # prompt_template = "generate dedicated data flow diagram for {product}."
 prompt_template = '''"Generate a detailed data flow diagram for {product} showcasing all key components and the flow of data between them.
