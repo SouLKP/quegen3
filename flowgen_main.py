@@ -88,13 +88,13 @@ if user_input:
         code_contents = file.read()
         st.code(code_contents, language="python")
         print(code_contents,"code created")
-        # try:
-        #     result = exec(code_contents)
-        #     print(result,"code executaed")
-        #     st.write("Result:", result)
-        #     # if image:
-        #     #     print("image",image)
-        #     # st.title("Data Flow Diagram :")
-        #     # st.image(image, caption='Data Flow Diagram', use_column_width=True)
-        # except Exception as e:
-        #     st.error(f"Error: {e}")
+        try:
+            result = exec(code_contents)
+            print(result,"code run")
+            st.write("Result:", result)
+            # if image:
+            #     print("image",image)
+            # st.title("Data Flow Diagram :")
+            # st.image(image, caption='Data Flow Diagram', use_column_width=True)
+        except Exception as e:
+            st.error(f"Error: {e}")
