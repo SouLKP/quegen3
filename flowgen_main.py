@@ -69,15 +69,29 @@ if user_input:
         file.write(code)
 
     # Read the contents of the code.py file
+    # with open("code.py", "r") as file:
+    #     code_contents = file.read()
+    #     st.code(code_contents, language="python")
+    #     try:
+    #         exec(code_contents)
+    #         image = Image.open('data_flow_diagram.png')
+    #         if image:
+    #             print("image",image)
+    #         st.title("Data Flow Diagram :")
+    #         st.image(image, caption='Data Flow Diagram', use_column_width=True)
+    #     except Exception as e:
+    #         st.error(f"Error: {e}")
+
     with open("code.py", "r") as file:
         code_contents = file.read()
         st.code(code_contents, language="python")
         try:
             exec(code_contents)
-            image = Image.open('data_flow_diagram.png')
-            if image:
-                print("image",image)
-            st.title("Data Flow Diagram :")
-            st.image(image, caption='Data Flow Diagram', use_column_width=True)
+            print("code executaed")
+
+            # if image:
+            #     print("image",image)
+            # st.title("Data Flow Diagram :")
+            # st.image(image, caption='Data Flow Diagram', use_column_width=True)
         except Exception as e:
             st.error(f"Error: {e}")
