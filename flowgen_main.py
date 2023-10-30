@@ -86,9 +86,9 @@ if user_input:
         code_contents = file.read()
         st.code(code_contents, language="python")
         try:
-            exec(code_contents)
-            print("code executaed")
-
+            result = exec(code_contents)
+            print(result,"code executaed")
+            st.write("Result:", result)
             # if image:
             #     print("image",image)
             # st.title("Data Flow Diagram :")
