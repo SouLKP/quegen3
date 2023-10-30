@@ -91,8 +91,6 @@ if user_input:
         st.code(code_contents, language="python")
         try:
             st.write("Executing...")
-            result = exec(code_contents)
-            print(result,"code executaed")
-            st.write("Result:", result)
+            exec(code_contents)
         except Exception as e:
             st.error(f"Gen Error: {e}")
