@@ -30,8 +30,8 @@ Focus on creating a clean, readable diagram that clearly conveys the core data f
 
 '''
  
-
-user_input = st.text_input("Enter dfd title")
+st.title("Enter your workflow for dfd")
+user_input = st.text_input("enter mind chart")
 if user_input:
     # user_input = "make dfd for langchain question answring with pdf."
     llm = OpenAI(temperature=0.3)
