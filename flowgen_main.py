@@ -47,7 +47,7 @@ if user_input:
    
     -give me only python code 
     -use pydot library for making graph
-    -use as it "from PIL import Image","from io import BytesIO"
+    -add low line from PIL import Image,from io import BytesIO
     -in last add save graph code graph.write_png(img/data_flow_diagram.png)
     - final add three line to that code "  1st line: image_bytes = graph.create_png(),2nd line : image = Image.open(BytesIO(image_bytes)),3rd line :st.image(image, caption='Data Flow Diagram', use_column_width=True)"
     '''
