@@ -46,6 +46,7 @@ if user_input:
     prompt = '''Understand the flow of this dfd : {code} and Generate full Python code for that dfd.
    
     -give me only python code 
+    - add all library like import streamlit as st ...
     -use pydot library for making graph
     -add low line from PIL import Image,from io import BytesIO
     -in last add save graph code graph.write_png(img/data_flow_diagram.png)
@@ -87,14 +88,9 @@ if user_input:
     with open("code.py", "r") as file:
         code_contents = file.read()
         st.code(code_contents, language="python")
-        print(code_contents,"code created")
         try:
             result = exec(code_contents)
-            print(result,"code run")
+            print(result,"code executaed")
             st.write("Result:", result)
-            # if image:
-            #     print("image",image)
-            # st.title("Data Flow Diagram :")
-            # st.image(image, caption='Data Flow Diagram', use_column_width=True)
         except Exception as e:
             st.error(f"Error: {e}")
