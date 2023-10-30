@@ -31,10 +31,10 @@ Focus on creating a clean, readable diagram that clearly conveys the core data f
 '''
  
 
-
-if st.text_input("Enter dfd title"):
-    user_input = "make dfd for langchain question answring with pdf."
-    llm = OpenAI(temperature=0.2)
+user_input = st.text_input("Enter dfd title")
+if user_input:
+    # user_input = "make dfd for langchain question answring with pdf."
+    llm = OpenAI(temperature=0.3)
     llm_chain = LLMChain(
         llm=llm,
         prompt=PromptTemplate.from_template(prompt_template)
