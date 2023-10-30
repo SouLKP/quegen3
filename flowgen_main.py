@@ -71,7 +71,7 @@ if user_input:
     # Read the contents of the code.py file
     with open("code.py", "r") as file:
         code_contents = file.read()
-        # st.code(code_contents, language="python")
+        st.code(code_contents, language="python")
         try:
             exec(code_contents)
             image = Image.open('data_flow_diagram.png')
