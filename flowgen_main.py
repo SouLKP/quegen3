@@ -47,7 +47,7 @@ if user_input:
    
     -give me only python code 
     -use pydot library for making graph
-    -in last add save graph code graph.write_png(data_flow_diagram.png)
+    -in last add save graph code graph.write_png(img/data_flow_diagram.png)
     '''
     llm = OpenAI(temperature=0, openai_api_key = OPENAI_API_KEY,max_tokens=832)
 
