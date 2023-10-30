@@ -63,6 +63,7 @@ if user_input:
     )
 
     output = llm_chain(code)
+    st.write("generated the output...")
     code = output['text']
 
     # st.write(code)
@@ -89,8 +90,9 @@ if user_input:
         code_contents = file.read()
         st.code(code_contents, language="python")
         try:
+            st.write("Executing...")
             result = exec(code_contents)
             print(result,"code executaed")
             st.write("Result:", result)
         except Exception as e:
-            st.error(f"Error: {e}")
+            st.error(f"Gen Error: {e}")
