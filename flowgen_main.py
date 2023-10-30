@@ -67,14 +67,17 @@ if st.text_input("Enter dfd title"):
     file_name = "code.py"
     with open(file_name, "w") as file:
         file.write(code)
-    
-    try:
-        output = subprocess.check_output(["python", "code.py"],stderr=subprocess.STDOUT, text=True)
-        print(output,'----------------------------------------------------')
-        st.code(output, language="python")
-    except subprocess.CalledProcessError as e:
-        st.error(f"Error running the script: {e}")
 
-    image = Image.open("data_flow_diagram.png")
-    st.title("Data Flow Diagram")
-    st.image(image, use_column_width=True)
+    # Read the contents of the code.py file
+    with open("code.py", "r") as file:
+        code_contents = file.read()
+        # st.code(code_contents, language="python")
+        try:
+            exec(code_contents)
+            image = Image.open('data_flow_diagram.png')
+            if image:
+                print("image",image)
+            st.title("Data Flow Diagram :")
+            st.image(image, caption='Data Flow Diagram', use_column_width=True)
+        except Exception as e:
+            st.error(f"Error: {e}")
